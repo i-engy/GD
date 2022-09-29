@@ -70,11 +70,18 @@ pipeline {
     // AWS Auth
     stage('AWS Auth') {
        steps  {
-           withCredentials([usernamePassword(credentialsId: "$AWS_CREDS", passwordVariable: 'AWS_SECRET_ACCESS_KEY ', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-        sh('aws s3 ls')     
-        }
+          script {
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_CREDS',
+                  ACCESS_KEY: 'ACCESS_KEY', SECRET_KEY: 'SECRET_KEY']]) { 
+                    sh """
+                      aws s3 ls
+                    """
+            }
+          }
        }
     }
+
+  
     
  
    // end AWS Validate
