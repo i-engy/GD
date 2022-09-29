@@ -11,14 +11,7 @@ def PACKER_FILE
 pipeline {
 
 
-  // Incoming Parameters
-  parameters {
-    credentials credentialType: 'com.cloudbees.jenkins.plugins.awscredentials.AWSCredentialsImpl', defaultValue: 'rtxcloud-d32d1-dtcp01', name: 'AWS_CREDS', required: true
-    credentials credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl', defaultValue: 'ae615a3f-017f-499e-bb76-3792f95e988f', name: 'GITHUB_CREDS', required: false
-    string(name: 'BUILD_NODE', defaultValue: 'prc-builder.twk.us.ray.com')
-    string(name: 'Packer_GIT_BRANCH', defaultValue: 'development')
-  }
-
+  
 
   // Build Agent(s)
   agent {
@@ -32,14 +25,6 @@ pipeline {
     //AMI_NAME    = "PCS_RHEL_8_Base_${env.DATE_TIME}"
     //PACKER_FILE = "./linux_base_image.json"
 
-    // Required for operations that need the proxy
-    http_proxy  = 'http://proxy.ext.ray.com:80'
-    HTTP_PROXY  = 'http://proxy.ext.ray.com:80'
-    https_proxy = 'http://proxy.ext.ray.com:80'
-    HTTPS_PROXY = 'http://proxy.ext.ray.com:80'
-    no_proxy    = '.us-gov-west-1.compute.internal, 127.0.0.1, localhost, .ray.com, s3-us-gov-west-1.amazonaws.com, 169.254.169.254, rds.amazonaws.com, s3-fips-us-gov-west-1.amazonaws.com'
-    NO_PROXY    = '.us-gov-west-1.compute.internal, 127.0.0.1, localhost, .ray.com, s3-us-gov-west-1.amazonaws.com, 169.254.169.254, rds.amazonaws.com, s3-fips-us-gov-west-1.amazonaws.com'
-     }
 
 
   // Pipeline Stages
@@ -57,7 +42,7 @@ pipeline {
         // Get source from Git repository
         checkout scm
         withCredentials([usernamePassword(credentialsId: "$GITHUB_CREDS", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-        sh('git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.ids.ray.com/nrp0257371/jenkins.git')
+        sh('git clone https://${GIT_USERNAME}:${GIT_PASSWORD}jenkins.git')
         }
 
         // Print Environment Varables; Uncomment for - DEBUGGING INFORMATION
@@ -101,7 +86,7 @@ pipeline {
    stage("AWS check") {
     steps{
      sh('set +x; echo "========== AWS Check  =========="')
- //   credentials credentialType: 'com.cloudbees.jenkins.plugins.awscredentials.AWSCredentialsImpl', defaultValue: 'rtxcloud-d32d1-dtcp01', name: 'AWS_CREDS', required: true {AWS("--region=us-gov-west-1 s3api list-buckets ")}
+ //   credentials credentialType: 'com.cloudbees.jenkins.plugins.awscredentials.AWSCredentialsImpl', defaultValue: '', name: 'AWS_CREDS', required: true {AWS("--region=us-gov-west-1 s3api list-buckets ")}
     }
    }
   }
