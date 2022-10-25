@@ -1,0 +1,114 @@
+- hosts: all
+  tasks:
+    - name: "ID 1: Patches and state of Windows update services."
+      block:
+        - name: "Get Full IIS error/warning logs from event viewer."
+          ansible.windows.win_shell: "Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-Wcmsvc*'} | Where-Object -FilterScript {($_.Level -eq 2) -or ($_.Level -eq 3)}"
+          become: yes
+          become_user: Administrator
+          register: iis_event_output
+          when:
+            - ansible_host == 'wsus'
+
+        - debug:
+            msg: "{{ iis_event_output }}"
+          when:
+            - ansible_host == 'wsus'
+
+        - name: "Get Full  error/warning logs from event viewer."
+          ansible.windows.win_shell: "Get-WinEvent -FilterHashtable @{LogName='*WID*'} | Where-Object -FilterScript {($_.Level -eq 2) -or ($_.Level -eq 4)}"
+          become: yes
+          become_user: Administrator
+          register: wid_event_output
+          when:
+            - ansible_host == 'wsus'
+
+        - debug:
+            msg: "{{ wid_event_output }}"
+          when:
+            - ansible_host == 'wsus'
+
+        - name: "Check status of all computers."
+          ansible.windows.win_shell: Get-WsusComputer -All | select fulldomainname, LastSyncResult, LastReportedStatusTime
+          become: yes
+          become_user: Administrator
+          register: replicaton_status
+          when:
+            - ansible_host == 'wsus'
+
+    - name: "ID 2: Domain controller functions."
+      block:
+        - name: Get info for all installed services
+          ansible.windows.win_service_info:
+          register: service_info
+          when:
+            - ansible_host == 'pgcw001dc01' or
+              ansible_host == 'pgcw001dc02'
+
+        - debug:
+            msg: "{{ service_info }}"
+          when:
+            - ansible_host == 'pgcw001dc01' or
+              ansible_host == 'pgcw001dc02'
+
+        - name: " Authentication and Global catalogue. run dcdiag."
+          ansible.windows.win_shell: dcdiag
+          become: yes
+          become_user: Administrator
+          register: dcdiag_output
+          when:
+            - ansible_host == 'domain_controller'
+
+        - debug:
+            msg: "{{ dcdiag_output.stderr_lines }}"
+          when:
+            - ansible_host == 'domain_controller'
+
+        - name: "Check Replication status."
+          ansible.windows.win_shell: repadmin /showrepl
+          become: yes
+          become_user: Administrator
+          register: replicaton_status
+          when:
+            - ansible_host == 'domain_controller'
+
+        - name: "Check file size of ntds.dit file."
+          ansible.windows.win_stat:
+            path: C:\Windows\NTDS\ntds.dit
+            # path: C:\Windows\Globalization\ELS\SpellDictionaries\MsSp7ar.lex
+          register: file_info
+          become_user: Administrator
+          when:
+            - ansible_host == 'domain_controller'
+
+        - debug:
+            msg: "Size of file ntds.dit is : {{ ( file_info.stat.size / 1024 / 1024 ) | int }} MiB"
+          when:
+            - ansible_host == 'domain_controller'
+          ignore_errors: true
+
+        - name: "nslookup Test 1."
+          ansible.windows.win_shell: nslookup 8.8.8.8
+          become: yes
+          become_user: Administrator
+          register: nslookup_test_1
+          when:
+            - ansible_host == 'domain_controller'
+
+        - debug:
+            msg: "{{ nslookup_test_1 }}"
+          when:
+            - ansible_host == 'domain_controller'
+
+        - name: "nslookup Test 2."
+          ansible.windows.win_shell: nslookup pgcw001dc01
+          become: yes
+          become_user: Administrator
+          register: nslookup_test_2
+          when:
+            - ansible_host == 'domain_controller'
+
+        - debug:
+            msg: "{{ nslookup_test_2 }}"
+          when:
+            - ansible_host == 'domain_controller'
