@@ -75,7 +75,6 @@
         - name: "Check file size of ntds.dit file."
           ansible.windows.win_stat:
             path: C:\Windows\NTDS\ntds.dit
-            # path: C:\Windows\Globalization\ELS\SpellDictionaries\MsSp7ar.lex
           register: file_info
           become_user: Administrator
           when:
@@ -112,3 +111,44 @@
             msg: "{{ nslookup_test_2 }}"
           when:
             - ansible_host == 'domain_controller'
+
+        - name: "Get Full error/warning logs from event viewer."
+          ansible.windows.win_shell: "Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows*'} | Where-Object -FilterScript {($_.Level -eq 2) -or ($_.Level -eq 3)}"
+          become: yes
+          become_user: Administrator
+          register: _event_output
+          when:
+            - ansible_host == 'vcenter'
+
+        - debug:
+            msg: "{{ vc_event_output }}"
+          when:
+            - ansible_host == 'vcenter'
+
+        - name: "Get Full error/warning logs from event viewer."
+          ansible.windows.win_shell: "Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-sql*'} | Where-Object -FilterScript {($_.Level -eq 2) -or ($_.Level -eq 3)}"
+          become: yes
+          become_user: Administrator
+          register: sql_event_output
+          when:
+            - ansible_host == 'sql'
+
+        - debug:
+            msg: "{{ sql_event_output }}"
+          when:
+            - ansible_host == 'sql' 
+
+        - name: Save the result from Horizon Check
+          ansible.windows.win_shell: EventManager(vim.event.EventManager)
+          become: yes
+          become_user: Administrator
+          register: hz_event_output
+          when:
+            - ansible_host == 'hz'
+
+        - debug:
+            msg: "{{ hz_event_output }}"
+          when:
+            - ansible_host == 'hz' 
+
+        
