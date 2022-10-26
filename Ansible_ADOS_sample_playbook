@@ -38,8 +38,8 @@
           register: replicaton_status
           when:
             - ansible_host == 'wsus'
-    ignore_errors: yes
-    
+     ignore_errors: yes
+
     - name: "ID 2: Domain controller functions."
       block:
         - name: Get info for all installed services
