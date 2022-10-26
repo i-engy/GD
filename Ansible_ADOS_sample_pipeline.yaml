@@ -42,14 +42,14 @@
           ansible.windows.win_service_info:
           register: service_info
           when:
-            - ansible_host == 'pgcw001dc01' or
-              ansible_host == 'pgcw001dc02'
+            - ansible_host == 'server2' or
+              ansible_host == 'server2'
 
         - debug:
             msg: "{{ service_info }}"
           when:
-            - ansible_host == 'pgcw001dc01' or
-              ansible_host == 'pgcw001dc02'
+            - ansible_host == 'server2' or
+              ansible_host == 'server2'
 
         - name: " Authentication and Global catalogue. run dcdiag."
           ansible.windows.win_shell: dcdiag
@@ -100,7 +100,7 @@
             - ansible_host == 'domain_controller'
 
         - name: "nslookup Test 2."
-          ansible.windows.win_shell: nslookup pgcw001dc01
+          ansible.windows.win_shell: nslookup server2
           become: yes
           become_user: Administrator
           register: nslookup_test_2
