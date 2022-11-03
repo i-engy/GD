@@ -1,0 +1,83 @@
+PS C:\Users\Administrator> C:\Users\Administrator\Desktop\perms.ps1
+Provide SID of user: : teset
+Change user permissions or not: (y/n): y
+Curent username: Administrator
+Fetching SID of user...
+Processing Directories...
+Could not find 'D:\1test'
+Could not find 'D:\test'
+Could not find 'D:\shell'
+
+PS C:\Users\Administrator> C:\Users\Administrator\Desktop\perms.ps1
+Provide SID of user: : test
+Change user permissions or not: (y/n): y
+Curent username: Administrator
+Fetching SID of user...
+Processing Directories...
+Could not find 'C:\1test'
+Getting permission details of 'C:\test' 'y'
+Change ownership.
+You cannot call a method on a null-valued expression.
+At C:\Users\Administrator\Desktop\perms.ps1:49 char:13
++             $acl.SetOwner([System.Security.Principal.NTAccount] $env: ...
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\Administrator\Desktop\perms.ps1:54 char:13
++             $acl.SetAccessRuleProtection($true, $false)
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\Administrator\Desktop\perms.ps1:64 char:9
++         $acl.SetSecurityDescriptorSddlForm($sddl)
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Modifying permission details of 'C:\test'
+Set-Acl : Cannot bind argument to parameter 'AclObject' because it is null.
+At C:\Users\Administrator\Desktop\perms.ps1:69 char:16
++         $acl | Set-Acl $dir -ErrorAction Continue -ErrorVariable err
++                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [Set-Acl], ParameterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationErrorNullNotAllowed,Microsoft.PowerShell.Commands.SetAclCommand
+ 
+WARNING: An error occurred while settinf permission
+Getting permission details of 'C:\shell' 'y'
+Change ownership.
+You cannot call a method on a null-valued expression.
+At C:\Users\Administrator\Desktop\perms.ps1:49 char:13
++             $acl.SetOwner([System.Security.Principal.NTAccount] $env: ...
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\Administrator\Desktop\perms.ps1:54 char:13
++             $acl.SetAccessRuleProtection($true, $false)
++             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\Administrator\Desktop\perms.ps1:64 char:9
++         $acl.SetSecurityDescriptorSddlForm($sddl)
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Modifying permission details of 'C:\shell'
+Set-Acl : Cannot bind argument to parameter 'AclObject' because it is null.
+At C:\Users\Administrator\Desktop\perms.ps1:69 char:16
++         $acl | Set-Acl $dir -ErrorAction Continue -ErrorVariable err
++                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [Set-Acl], ParameterBindingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationErrorNullNotAllowed,Microsoft.PowerShell.Commands.SetAclCommand
+ 
+WARNING: An error occurred while settinf permission
+
+PS C:\Users\Administrator> 
