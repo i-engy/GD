@@ -1,0 +1,340 @@
+pietto@pietto:/etc/ansible/workspace/GD$ ansible-playbook Ansible_ADOS_sample_playbook -vvv
+ansible-playbook 2.10.17
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = ['/home/pietto/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /home/pietto/.local/lib/python3.8/site-packages/ansible
+  executable location = /home/pietto/.local/bin/ansible-playbook
+  python version = 3.8.10 (default, Jun 22 2022, 20:18:18) [GCC 9.4.0]
+Using /etc/ansible/ansible.cfg as config file
+host_list declined parsing /etc/ansible/hosts as it did not pass its verify_file() method
+script declined parsing /etc/ansible/hosts as it did not pass its verify_file() method
+auto declined parsing /etc/ansible/hosts as it did not pass its verify_file() method
+Parsed /etc/ansible/hosts inventory source with ini plugin
+Skipping callback 'default', as we already have a stdout callback.
+Skipping callback 'minimal', as we already have a stdout callback.
+Skipping callback 'oneline', as we already have a stdout callback.
+
+PLAYBOOK: Ansible_ADOS_sample_playbook ******************************************************************************************************************************************************
+1 plays in Ansible_ADOS_sample_playbook
+
+PLAY [all] **********************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:1
+<192.168.118.133> ESTABLISH SSH CONNECTION FOR USER: pietto
+<192.168.118.133> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/pietto/.ssh/id_rsa"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="pietto"' -o ConnectTimeout=10 -o ControlPath=/home/pietto/.ansible/cp/92550a9546 192.168.118.133 '/bin/sh -c '"'"'echo ~pietto && sleep 0'"'"''
+redirecting (type: modules) ansible.builtin.setup to ansible.windows.setup
+redirecting (type: modules) ansible.builtin.setup to ansible.windows.setup
+Using module file /home/pietto/.local/lib/python3.8/site-packages/ansible_collections/ansible/windows/plugins/modules/setup.ps1
+Pipelining is enabled.
+<192.168.118.146> ESTABLISH WINRM CONNECTION FOR USER: administrator on PORT 5986 TO 192.168.118.146
+Using module file /home/pietto/.local/lib/python3.8/site-packages/ansible_collections/ansible/windows/plugins/modules/setup.ps1
+Pipelining is enabled.
+<192.168.118.145> ESTABLISH WINRM CONNECTION FOR USER: administrator on PORT 5985 TO 192.168.118.145
+redirecting (type: modules) ansible.builtin.setup to ansible.windows.setup
+Using module file /home/pietto/.local/lib/python3.8/site-packages/ansible_collections/ansible/windows/plugins/modules/setup.ps1
+Pipelining is enabled.
+<192.168.118.128> ESTABLISH WINRM CONNECTION FOR USER: administrator on PORT 5986 TO 192.168.118.128
+EXEC (via pipeline wrapper)
+EXEC (via pipeline wrapper)
+EXEC (via pipeline wrapper)
+ok: [server4]
+ok: [server2]
+ok: [server3]
+<192.168.118.133> (255, b'', b'ssh: connect to host 192.168.118.133 port 22: No route to host\r\n')
+fatal: [server1]: UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: ssh: connect to host 192.168.118.133 port 22: No route to host",
+    "unreachable": true
+}
+META: ran handlers
+
+TASK [test connection] **********************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:3
+Using module file /home/pietto/.local/lib/python3.8/site-packages/ansible_collections/ansible/windows/plugins/modules/win_ping.ps1
+Pipelining is enabled.
+<192.168.118.145> ESTABLISH WINRM CONNECTION FOR USER: administrator on PORT 5985 TO 192.168.118.145
+Using module file /home/pietto/.local/lib/python3.8/site-packages/ansible_collections/ansible/windows/plugins/modules/win_ping.ps1
+Pipelining is enabled.
+<192.168.118.146> ESTABLISH WINRM CONNECTION FOR USER: administrator on PORT 5986 TO 192.168.118.146
+Using module file /home/pietto/.local/lib/python3.8/site-packages/ansible_collections/ansible/windows/plugins/modules/win_ping.ps1
+Pipelining is enabled.
+<192.168.118.128> ESTABLISH WINRM CONNECTION FOR USER: administrator on PORT 5986 TO 192.168.118.128
+EXEC (via pipeline wrapper)
+EXEC (via pipeline wrapper)
+EXEC (via pipeline wrapper)
+ok: [server2] => {
+    "changed": false,
+    "invocation": {
+        "module_args": {
+            "data": "pong"
+        }
+    },
+    "ping": "pong"
+}
+ok: [server4] => {
+    "changed": false,
+    "invocation": {
+        "module_args": {
+            "data": "pong"
+        }
+    },
+    "ping": "pong"
+}
+ok: [server3] => {
+    "changed": false,
+    "invocation": {
+        "module_args": {
+            "data": "pong"
+        }
+    },
+    "ping": "pong"
+}
+
+TASK [Get Full IIS error/warning logs from event viewer.] ***********************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:8
+skipping: [server2] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server4] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server3] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+
+TASK [debug] ********************************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:16
+skipping: [server2] => {}
+skipping: [server3] => {}
+skipping: [server4] => {}
+
+TASK [Get Full  error/warning logs from event viewer.] **************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:21
+skipping: [server2] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server4] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server3] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+
+TASK [debug] ********************************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:29
+skipping: [server2] => {}
+skipping: [server4] => {}
+skipping: [server3] => {}
+
+TASK [Check status of all computers.] *******************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:34
+skipping: [server2] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server4] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server3] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+
+TASK [Get info for all installed services] **************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:45
+skipping: [server2] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server4] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server3] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+
+TASK [debug] ********************************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:52
+skipping: [server2] => {}
+skipping: [server4] => {}
+skipping: [server3] => {}
+
+TASK [Authentication and Global catalogue. run dcdiag.] *************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:58
+skipping: [server2] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server4] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server3] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+
+TASK [debug] ********************************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:66
+skipping: [server2] => {}
+skipping: [server4] => {}
+skipping: [server3] => {}
+
+TASK [Check Replication status.] ************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:71
+skipping: [server2] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server4] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server3] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+
+TASK [Check file size of ntds.dit file.] ****************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:79
+skipping: [server2] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server4] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server3] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+
+TASK [debug] ********************************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:87
+skipping: [server2] => {}
+skipping: [server4] => {}
+skipping: [server3] => {}
+
+TASK [nslookup Test 1.] *********************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:93
+skipping: [server2] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server4] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server3] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+
+TASK [debug] ********************************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:101
+skipping: [server2] => {}
+skipping: [server4] => {}
+skipping: [server3] => {}
+
+TASK [nslookup Test 2.] *********************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:106
+skipping: [server2] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server4] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server3] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+
+TASK [debug] ********************************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:114
+skipping: [server2] => {}
+skipping: [server4] => {}
+skipping: [server3] => {}
+
+TASK [Get Full error/warning logs from event viewer.] ***************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:119
+skipping: [server2] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server4] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server3] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+
+TASK [debug] ********************************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:127
+skipping: [server2] => {}
+skipping: [server3] => {}
+skipping: [server4] => {}
+
+TASK [Get Full error/warning logs from event viewer.] ***************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:132
+skipping: [server2] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server4] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server3] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+
+TASK [debug] ********************************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:140
+skipping: [server2] => {}
+skipping: [server3] => {}
+skipping: [server4] => {}
+
+TASK [Save the result from Horizon Check] ***************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:145
+skipping: [server2] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server3] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+skipping: [server4] => {
+    "changed": false,
+    "skip_reason": "Conditional result was False"
+}
+
+TASK [debug] ********************************************************************************************************************************************************************************
+task path: /etc/ansible/workspace/GD/Ansible_ADOS_sample_playbook:153
+skipping: [server2] => {}
+skipping: [server4] => {}
+skipping: [server3] => {}
+META: ran handlers
+META: ran handlers
+
+PLAY RECAP **********************************************************************************************************************************************************************************
+server1                    : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=0    unreachable=0    failed=0    skipped=22   rescued=0    ignored=0
+server3                    : ok=2    changed=0    unreachable=0    failed=0    skipped=22   rescued=0    ignored=0
+server4                    : ok=2    changed=0    unreachable=0    failed=0    skipped=22   rescued=0    ignored=0
