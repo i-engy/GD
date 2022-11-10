@@ -1,0 +1,143 @@
+- hosts: all
+  tasks:
+    - name: "ID 1: Patches and state of Windows update services."
+      block:
+        - name: "Get Full IIS error/warning logs from event viewer."
+          ansible.windows.win_shell: "'Application','System' | ForEach-Object { Get-EventLog -LogName $_ -Source *W3SVC*,WAS,*ASP* -EntryType Warning,Error, Information } | Format-List"
+          become_method: runas
+          become_user: Administrator
+          register: iis_event_output
+
+        - name: "When some input recorded."
+          debug:
+            msg: "{{ iis_event_output.stdout_lines }}"
+          when:
+            - iis_event_output.stdout | length > 0
+
+        - name: "When no events recoreded"
+          debug:
+            msg: "No IIS Events recorded."
+          when:
+            - iis_event_output.stdout | length == 0
+
+            
+        - name: "Get Full  error/warning logs for WID from event viewer."
+          ansible.windows.win_shell: "Get-EventLog -LogName *WID* -Source * -EntryType Warning,Error | Format-List"
+          become_method: runas
+          become_user: Administrator
+          register: wid_event_output
+
+        - name: "Show WID event logs."
+          debug:
+            msg: "{{ wid_event_output.stdout_lines }}"
+          when:
+            - wid_event_output.stdout | length > 0
+
+        - name: "When no events recoreded"
+          debug:
+            msg: "No WID Events recorded."
+          when:
+            - wid_event_output.stdout | length == 0
+
+        - name: "Check status of all computers."
+          ansible.windows.win_shell: Get-WsusComputer -All | select fulldomainname, LastSyncResult, LastReportedStatusTime
+          become_method: runas
+          become_user: Administrator
+          register: servers_status
+
+
+        - debug:
+            msg: "{{ servers_status.stdout_lines }}"
+          when:
+            - servers_status.stdout | length > 0
+
+        - debug:
+            msg: "No info recorded."
+          when:
+            - servers_status.stdout | length == 0
+
+
+    - name: "ID 2: Domain controller functions."
+      block:
+        - name: Get info for all installed services
+          ansible.windows.win_service_info:
+          become_method: runas
+          become_user: Administrator          
+          register: service_info
+
+
+        - name: "Show all installed services info."
+          debug:
+            msg: "{{ service_info.stdout_lines }}"
+          when:
+            - service_info.stdout | length > 0
+
+        - name: "When no info recorded"
+          debug:
+            msg: "No info recorded."
+          when:
+            - service_info.stdout | length == 0
+
+        - name: " Authentication and Global catalogue. run dcdiag."
+          ansible.windows.win_shell: dcdiag
+          become_method: runas
+          become_user: Administrator 
+          register: dcdiag_output
+
+        - debug:
+            msg: "{{ dcdiag_output.stdout_lines }}"
+          when:
+            - dcdiag_output.stdout | length > 0
+
+        - debug:
+            msg: "No info recorded."
+          when:
+            - dcdiag_output.stdout | length == 0
+            
+
+        - name: "Check Replication status."
+          ansible.windows.win_shell: repadmin /showrepl
+          become_method: runas
+          become_user: Administrator 
+          register: replicaton_status
+
+        - debug:
+            msg: "{{ replicaton_status.stdout_lines }}"
+          when:
+            - replicaton_status.stdout | length > 0
+
+        - debug:
+            msg: "No info recorded."
+          when:
+            - replicaton_status.stdout | length == 0            
+
+        - name: "Check file size of ntds.dit file."
+          ansible.windows.win_stat:
+            path: C:\Windows\NTDS\ntds.dit
+          register: file_info
+          become_method: runas
+          become_user: Administrator           
+
+
+        - debug:
+            msg: "Size of file ntds.dit is : {{ ( file_info.stat.size / 1024 / 1024 ) | int }} MiB"
+          ignore_errors: true
+
+        - name: "nslookup Test 1."
+          ansible.windows.win_shell: nslookup 8.8.8.8
+          become: yes
+          become_user: Administrator
+          register: nslookup_test_1         
+
+        - debug:
+            msg: "{{ nslookup_test_1 }}"
+            
+
+        - name: "nslookup Test 2."
+          ansible.windows.win_shell: nslookup pgcw001dc01
+          become: yes
+          become_user: Administrator
+          register: nslookup_test_2'
+
+        - debug:
+            msg: "{{ nslookup_test_2 }}"
